@@ -1,0 +1,34 @@
+{
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "Window manipulator",
+    "default_popup": "window.html",
+    "default_icon": {
+      "19": "icons/window19.png",
+      "38": "icons/window38.png"
+    }
+  },
+  "icons": {
+    "48": "icons/window.png",
+    "96": "icons/window@2x.png"
+  },
+  "description": "A list of methods you can perform on a window.",
+  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/window-manipulator",
+  "manifest_version": 2,
+  "name": "Window manipulator",
+  "version": "1.0",
+
+  "permissions": [
+     "storage",
+     "activeTab",
+     "tabs",
+     "notifications",
+     "alarms",
+     "<all_urls>",
+     "*://*.aesthetic.ru/*",
+     "*://10.250.4.13/*",
+     "*://*.advance-docs.ru/*"
+     "*://code.jquery.com/ui/1.12.1/jquery-ui.js/*"
+     "*://code.jquery.com/jquery-1.12.4.js/*"
+ ]
+}

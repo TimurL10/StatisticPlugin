@@ -1,0 +1,29 @@
+html, body {
+  width: 350px;
+}
+
+a {
+  margin: 10px;
+  display: inline-block;
+}
+
+.panel {
+  margin: 5px;
+}
+
+ table, td {
+    border: 1px solid black;
+}
+
+#All_authors {
+display:table;
+width:80%;
+}
+
+#All_authors > div {
+	display: table-row;
+}
+
+#All_authors > div > a {
+	display:table-cell;  
+}
