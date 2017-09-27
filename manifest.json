@@ -28,7 +28,15 @@
      "*://*.aesthetic.ru/*",
      "*://10.250.4.13/*",
      "*://*.advance-docs.ru/*"
-     "*://code.jquery.com/ui/1.12.1/jquery-ui.js/*"
-     "*://code.jquery.com/jquery-1.12.4.js/*"
- ]
+ ],
+
+ "content_scripts": [
+  {
+    "matches": ["*://stage-2-docs.advance-docs.ru/assistant"],
+    "js": ["button.js", "jquery-ui.js", "jquery-1.12.4.js"],
+    "css": ["window.css", "jquery-ui.css"]
+
+  }
+]
+
 }

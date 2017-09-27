@@ -1,29 +1,75 @@
-html, body {
-  width: 350px;
-}
+/*html, body {
+  width: 500px;
+}*/
 
-a {
+.mySubDiv {
+    width: 300px;
+}
+/*a {
   margin: 10px;
   display: inline-block;
-}
+}*/
 
-.panel {
+/*.panel {
   margin: 5px;
-}
+}*/
 
- table, td {
+ /*table, td {
     border: 1px solid black;
-}
-
+}*/
 #All_authors {
 display:table;
-width:80%;
-}
 
+}
 #All_authors > div {
 	display: table-row;
 }
-
-#All_authors > div > a {
-	display:table-cell;  
+#All_authors > div[data-sel="1"] span {
+  color:#0000FF;
+}
+#All_authors > div > span {
+	display:table-cell;
+}
+#fromDate {
+  margin-bottom: 1px;
+  margin-left: 5px;
+  margin-top: 1px
+}
+#toDate {
+  margin-bottom: 1px;
+  margin-left: 5px;
+}
+.textH5 {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+#myBtn {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+#multSelect {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+#dsGostR {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+#dsTrEaes {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+#ssTrEas {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+#ssGostR {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
