@@ -4,11 +4,9 @@ var advance = {
   name : "",
   value : "",
   caseAmount : ""
-
 }
 var setting = {
 }
-
 var Authors = [{
   name: "",
   value: "",
@@ -21,14 +19,6 @@ var Authors = [{
 }]
 var arpromis = []
 var arrSelectedAutors =[]
-
-// var div = document.createElement("div")
-// div.innerHTML = '<select multiple id="mySelect" size ="10"></select>'
-// document.querySelector('.wrapper').appendChild(div)
-//
-// var div = document.createElement("div")
-// div.id = "CheckFo"
-// document.querySelector('.wrapper').appendChild(div)
 
 var div = document.createElement("div")
 div.innerHTML = '<h4 class="textH5">Отчет:</h4>'
@@ -54,44 +44,80 @@ buttonDate.id = "myBtn"
 document.querySelector('.wrapper').appendChild(buttonDate)
 buttonDate.addEventListener('click',submutFunc,false);
 function submutFunc() {
-  setting.arrSelectedAutors = Authors.filter(item => {
-    if(item.turn == "on") {return item}
-  })
   setting.fromDate = document.querySelector("#fromDate").value
   setting.toDate = document.querySelector("#toDate").value
   setting.typedoc = []
+  //Set array of checked agents
   var i = document.querySelectorAll("#checkbDiv input")
-    i.forEach(item=>{
+    i.forEach(item => {
       if(item.checked) {
         setting.typedoc.push(item)
       }
   })
 var promiseArray = []
+Authors.filter(item => {
+  if(item.turn == "on") {return item}
+}).forEach((item,index,arr) => {
 
-setting.arrSelectedAutors.forEach((item,index,arr) =>{
-  setting.typedoc.forEach(elemnt => {
+    setting.typedoc.forEach(elemnt => {
     promiseArray.push(SetValue(item,elemnt,arr,index))
   })
 })
+Promise.all(promiseArray).then((result)=>{
+//  document.body.innerHTML = "Загрузили Ура!!!"
+var bigdiv = document.createElement("div")
 
-Promise.all(promiseArray).then(()=>{
-  console.log(promiseArray)
-});
+      result.forEach(promiss=>{
+console.log(promiss);
+        var item = promiss
+
+        var div = document.createElement("div")
+
+        setting.typedoc.forEach(elemnt => {
+
+console.log(item);
+        div.innerHTML +=  item.name+  "- всего сделанно:" + elemnt.id + " - " + item[elemnt.id] + "\r\n"
+        bigdiv.appendChild(div)
+      })
+document.querySelector('.wrapper').appendChild(bigdiv)
+})
+
+})
+}
 
 function SetValue(item,elemnt,arr,index) {
   return Promise.resolve().then(()=>{
-    arr[index][elemnt.id] =  FindValue({
+    //document.body.innerHTML = "Загружаем..."
+    return FindValue({
       value:item.value,
        type_value : elemnt.value,
        fromDate : setting.fromDate,
        toDate: setting.toDate
-    })
-  });
+    }).then(object => {
 
+      arr[index][elemnt.id] =  object;
+return arr[index]
+      // switch (document.body.innerHTML) {
+      //   case "Загружаем...":
+      //     document.body.innerHTML = "Загружаем."
+      //     console.log(document.body.innerHTML);
+      //     break;
+      //     case "Загружаем..":
+      //       document.body.innerHTML = "Загружаем..."
+      //       console.log(document.body.innerHTML);
+      //       break;
+      //       case "Загружаем.":
+      //         document.body.innerHTML = "Загружаем.."
+      //         console.log(document.body.innerHTML);
+      //         break;
+      //   default:
+//document.querySelectorAll('#' + 'i' + item.value + ' span')[1].innerHTML = item.caseAmount;
+})
+})
 }
 
+
 function FindValue(object) {
-  console.log(object)
   var body  = new FormData();
   body.append("SelectedExecutorId", object.value);
   body.append("SelectedStartDate", object.fromDate);
@@ -111,24 +137,8 @@ function FindValue(object) {
   return "Ошибка";
 })
 }
-    // var arrSelectedAutors = document.querySelectorAll('div[data-sel]')
-    //
-    // fromDate = document.querySelector("#fromDate").value
-    // toDate = document.querySelector("#toDate").value
-    // document.querySelector("#fromDate").value = ""
-    // document.querySelector("#toDate").value = ""
-    //
-    //
-    //
-    // LoadSelectedAutorhs(Authors, fromDate, toDate)
-
-}
-// var div = document.createElement("div")
-// div.innerHTML = '<h5 class="textH5">Исполнители:</h5>'
-// document.querySelector('.wrapper').appendChild(div)
 
 LoadAutorhs()
-
 
 function LoadAutorhs() {
   fetch("https://stage-2-docs.advance-docs.ru/Claim",{credentials: "include"})
@@ -193,43 +203,19 @@ function LoadAutorhs() {
 })
 };
 
- //  function setCaseAmount(item, fromDate, toDate){
- //    var body  = new FormData();
- //    body.append("SelectedExecutorId", item.value);
- //    body.append("SelectedStartDate", fromDate);
- //    body.append("SelectEndDate", toDate);
- //    body.append("SelectedDocumentTypeId", 3);
- //    return  fetch("https://stage-2-docs.advance-docs.ru/Claim",{
- //      method : 'POST',
- //      body : body,
- //      credentials: "include"
- //  }).then(function(responce){
- //      return responce.text()
- // }).then(function(text){
- //    parser = new DOMParser();
- //    doc = parser.parseFromString(text, "text/html");
- //   item.caseAmount = doc.querySelector("table.inner tbody tr td").innerHTML;
- //   return item;
- // }).catch((err)=>{
- //   item.caseAmount = "Ошибка";
- // })
- // };
-
-    function LoadSelectedAutorhs(arrSelectedAutors,fromDate, toDate) {
-      var arpromis=[]
-       arrSelectedAutors.forEach(item=>{
-         if (item.turn == "on") {
-           arpromis.push(setCaseAmount(item, fromDate, toDate))
-         }
-       })
-       return Promise.all(arpromis).then((value) => {
-         value.forEach(item=>{
-           document.querySelectorAll('#' + 'i' + item.value + ' span')[1].innerHTML = item.caseAmount;
-           })
-         })
-       }
-
-
+    // function LoadSelectedAutorhs(arrSelectedAutors,fromDate, toDate) {
+    //   var arpromis=[]
+    //    arrSelectedAutors.forEach(item=>{
+    //      if (item.turn == "on") {
+    //        arpromis.push(setCaseAmount(item, fromDate, toDate))
+    //      }
+    //    })
+    //    return Promise.all(arpromis).then((value) => {
+    //      value.forEach(item=>{
+    //        document.querySelectorAll('#' + 'i' + item.value + ' span')[1].innerHTML = item.caseAmount;
+    //        })
+    //      })
+    //    }
 
 // function CheckSession(argument) {
 // fetch("https://stage-2-docs.advance-docs.ru/",{
