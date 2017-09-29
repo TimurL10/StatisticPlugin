@@ -54,36 +54,28 @@ function submutFunc() {
         setting.typedoc.push(item)
       }
   })
-var promiseArray = []
-Authors.filter(item => {
-  if(item.turn == "on") {return item}
-}).forEach((item,index,arr) => {
-
-    setting.typedoc.forEach(elemnt => {
-    promiseArray.push(SetValue(item,elemnt,arr,index))
-  })
-})
-Promise.all(promiseArray).then((result)=>{
-//  document.body.innerHTML = "Загрузили Ура!!!"
-var bigdiv = document.createElement("div")
-
-      result.forEach(promiss=>{
-console.log(promiss);
-        var item = promiss
-
-        var div = document.createElement("div")
-
+    var promiseArray = []
+    Authors.filter(item => {
+      if(item.turn == "on") {return item}
+      }).forEach((item,index,arr) => {
         setting.typedoc.forEach(elemnt => {
-
-console.log(item);
-        div.innerHTML +=  item.name+  "- всего сделанно:" + elemnt.id + " - " + item[elemnt.id] + "\r\n"
-        bigdiv.appendChild(div)
+        promiseArray.push(SetValue(item,elemnt,arr,index))
+        })
       })
-document.querySelector('.wrapper').appendChild(bigdiv)
-})
-
-})
-}
+        Promise.all(promiseArray).then((result)=>{
+        //var bigdiv = document.createElement("div")
+        result.forEach(promiss=>{
+        var item = promiss
+        //var div = document.createElement("div")
+        setting.typedoc.forEach(elemnt => {
+        document.querySelector('#' +  item.name + ' span')[1].innerHTML += elemnt.id + " : " + item[elemnt.id];
+        // div.innerHTML +=  item.name + elemnt.id + " : " + item[elemnt.id] + "\r\n"
+        // bigdiv.appendChild(div)
+      })
+      //document.querySelector('.wrapper').appendChild(bigdiv)
+        })
+      })
+    }
 
 function SetValue(item,elemnt,arr,index) {
   return Promise.resolve().then(()=>{
@@ -96,7 +88,7 @@ function SetValue(item,elemnt,arr,index) {
     }).then(object => {
 
       arr[index][elemnt.id] =  object;
-return arr[index]
+      return arr[index]
       // switch (document.body.innerHTML) {
       //   case "Загружаем...":
       //     document.body.innerHTML = "Загружаем."
@@ -115,7 +107,6 @@ return arr[index]
 })
 })
 }
-
 
 function FindValue(object) {
   var body  = new FormData();
@@ -167,12 +158,12 @@ function LoadAutorhs() {
     Authors.forEach(function(item){
     var subdiv = document.createElement('div');
     subdiv.className = "mySubDiv"
-    subdiv.id = "i" + item.value
+    subdiv.id = item.name
     subdiv.myName = item.name
     subdiv.addEventListener('click',(e)=>{
       var o=e.target;
       while(o){
-        if(o.tagName=='DIV'){
+        if(o.tagName =='DIV'){
           break;
         }
         o=o.parentNode;
