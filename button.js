@@ -20,6 +20,13 @@ var Authors = [{
 var arpromis = []
 var arrSelectedAutors =[]
 
+
+
+var div = document.createElement("div")
+div.className="ldBar"
+div.setAttribute('data-value', '50');
+document.querySelector('.wrapper').appendChild(div)
+
 var div = document.createElement("div")
 div.innerHTML = '<h4 class="textH5">Отчет:</h4>'
 document.querySelector('.wrapper').appendChild(div)
@@ -38,6 +45,10 @@ div2.innerHTML = '<input type="checkbox" id="dsGostR" value="3"><label for="dsGo
 //div2.innerHTML = '<select multiple size="4" id="multSelect"><option value="3" >ДС ГОСТ Р</option><option value="5">ДС ТР ЕАЭС</option><option value="4">СС ГОСТ Р</option><option value="6">СС ТР ЕАЭС</option></select>'
 document.querySelector('.wrapper').appendChild(div2)
 
+
+
+
+
 var buttonDate = document.createElement("button")
 buttonDate.innerHTML = "Submit"
 buttonDate.id = "myBtn"
@@ -54,56 +65,77 @@ function submutFunc() {
         setting.typedoc.push(item)
       }
   })
-    var promiseArray = []
-    Authors.filter(item => {
+      var promiseArray = []
+      Authors.filter(item => {
       if(item.turn == "on") {return item}
-      }).forEach((item,index,arr) => {
+    })
+    .forEach((item,index,arr) => {
         setting.typedoc.forEach(elemnt => {
         promiseArray.push(SetValue(item,elemnt,arr,index))
         })
       })
-        Promise.all(promiseArray).then((result)=>{
-        //var bigdiv = document.createElement("div")
-        result.forEach(promiss=>{
-        var item = promiss
-        //var div = document.createElement("div")
-        setting.typedoc.forEach(elemnt => {
-        document.querySelector('#' +  item.name + ' span')[1].innerHTML += elemnt.id + " : " + item[elemnt.id];
-        // div.innerHTML +=  item.name + elemnt.id + " : " + item[elemnt.id] + "\r\n"
-        // bigdiv.appendChild(div)
-      })
-      //document.querySelector('.wrapper').appendChild(bigdiv)
+
+          Promise.all(promiseArray).then((result) => {
+          var table = document.querySelector('.res-table');
+          if (!table) {
+            table = document.createElement("div");
+            table.className = "res-table"
+            document.querySelector('#mainDiv').appendChild(table)
+          }
+            table.innerHTML = ''
+          var row = document.createElement("div");
+          row.className="res-row";
+          row.innerHTML='<div class="res-cell" color="#9c9ea1">ИСПОЛНИТЕЛЬ</div>';
+          table.appendChild(row);
+          setting.typedoc.forEach(elemnt => {
+            var cell = document.createElement("div");
+            cell.className = "res-cell"
+            cell.setAttribute('color', '#9c9ea1');
+            switch(elemnt.id) {
+              case 'dsGostR' : cell.innerHTML = "ДС ГОСТ Р";
+              break;
+              case 'dsTrEaes' : cell.innerHTML = "ДС ТР ЕАЭС";
+              break;
+              case 'ssGostR' : cell.innerHTML = "СС ГОСТ Р";
+              break;
+              case 'ssTrEas' : cell.innerHTML = "СС ТР ЕАЭС";
+              break;
+            }
+            row.appendChild(cell)
+          })
+                Authors.filter(item => (item.turn == "on")).forEach(promiss=> {
+                var item = promiss
+                var row = document.createElement("div");
+                row.className="res-row"
+                var cell = document.createElement("div");
+                cell.className = "res-cell"
+                cell.innerHTML = item.name
+                row.appendChild(cell)
+
+                setting.typedoc.forEach(elemnt => {
+                  var cell = document.createElement("div");
+                  cell.className = "res-cell"
+                  cell.innerHTML = item[elemnt.id]
+                  row.appendChild(cell)
+           })
+           table.appendChild(row)
         })
+
+
       })
-    }
+}
+
 
 function SetValue(item,elemnt,arr,index) {
-  return Promise.resolve().then(()=>{
-    //document.body.innerHTML = "Загружаем..."
+  return Promise.resolve().then(()=> {
     return FindValue({
       value:item.value,
        type_value : elemnt.value,
        fromDate : setting.fromDate,
        toDate: setting.toDate
     }).then(object => {
-
       arr[index][elemnt.id] =  object;
       return arr[index]
-      // switch (document.body.innerHTML) {
-      //   case "Загружаем...":
-      //     document.body.innerHTML = "Загружаем."
-      //     console.log(document.body.innerHTML);
-      //     break;
-      //     case "Загружаем..":
-      //       document.body.innerHTML = "Загружаем..."
-      //       console.log(document.body.innerHTML);
-      //       break;
-      //       case "Загружаем.":
-      //         document.body.innerHTML = "Загружаем.."
-      //         console.log(document.body.innerHTML);
-      //         break;
-      //   default:
-//document.querySelectorAll('#' + 'i' + item.value + ' span')[1].innerHTML = item.caseAmount;
 })
 })
 }
@@ -152,9 +184,12 @@ function LoadAutorhs() {
     });
     Authors.splice(0,1)
   }).then(()=>{
+    var mainDiv = document.createElement('div');
+    mainDiv.id = "mainDiv";
     var div = document.createElement('div');
     div.id = "All_authors";
-    div.className = "mySubDiv"
+    //div.className = "mySubDiv"
+    mainDiv.appendChild(div)
     Authors.forEach(function(item){
     var subdiv = document.createElement('div');
     subdiv.className = "mySubDiv"
@@ -174,57 +209,22 @@ function LoadAutorhs() {
           item.turn = "off"
         } else {
           item.turn = "on"
-          o.setAttribute('data-sel',1);
+          o.setAttribute('data-sel', 1);
         }
       }
     },false);
     var b = document.createElement('span');
-    b.className = "alert alert-success";
-    b.href="#";
+    //b.className = "alert alert-success";
+    //b.href="#";
     b.innerHTML = item.name;
     subdiv.appendChild(b);
     var c = document.createElement('span');
-    c.className = "alert alert-success";
-    c.href="#";
+    //c.className = "alert alert-success";
+    //c.href="#";
     c.innerHTML = item.caseAmount;
     subdiv.appendChild(c);
     div.appendChild(subdiv);
   })
-  document.querySelector('.wrapper').appendChild(div)
+  document.querySelector('.wrapper').appendChild(mainDiv)
 })
 };
-
-    // function LoadSelectedAutorhs(arrSelectedAutors,fromDate, toDate) {
-    //   var arpromis=[]
-    //    arrSelectedAutors.forEach(item=>{
-    //      if (item.turn == "on") {
-    //        arpromis.push(setCaseAmount(item, fromDate, toDate))
-    //      }
-    //    })
-    //    return Promise.all(arpromis).then((value) => {
-    //      value.forEach(item=>{
-    //        document.querySelectorAll('#' + 'i' + item.value + ' span')[1].innerHTML = item.caseAmount;
-    //        })
-    //      })
-    //    }
-
-// function CheckSession(argument) {
-// fetch("https://stage-2-docs.advance-docs.ru/",{
-//   credentials: "include"
-// }).then(function(responce){
-//  return responce.text()
-// }).then(function(text){
-//   parser = new DOMParser();
-//   doc = parser.parseFromString(text, "text/html");
-//   if(doc.querySelector(".btn-submit")){
-//     advance.status = "Off"
-//     advance.name = ""
-//   }
-//   else{
-//     advance.status = "On"
-//     advance.name = doc.querySelector(".admin-menu a").innerHTML
-//   }
-//   document.querySelector('#name').innerHTML = advance.name;
-//   document.querySelector('#status').innerHTML =advance.status;
-// })
-// }
