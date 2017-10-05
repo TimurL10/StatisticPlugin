@@ -21,29 +21,34 @@ var arpromis = []
 var arrSelectedAutors =[]
 
 
-
 var div = document.createElement("div")
 div.className="ldBar"
 div.setAttribute('data-value', '50');
 document.querySelector('.wrapper').appendChild(div)
 
 var div = document.createElement("div")
-div.innerHTML = '<h4 class="textH5">Отчет:</h4>'
+div.innerHTML = 'Настройки'
+div.className = 'settings-pan-title'
 document.querySelector('.wrapper').appendChild(div)
 
 var div = document.createElement("div")
-div.innerHTML = '<a href="#" id="name" align="center"></a><br><a href="#" id="status" align="left"></a><br>'
+div.className = 'settings-pan'
 document.querySelector('.wrapper').appendChild(div)
+
+// var div = document.createElement("div")
+// div.innerHTML = '<a href="#" id="name" align="center"></a><br><a href="#" id="status" align="left"></a><br>'
+// document.querySelector('.wrapper').appendChild(div)
 
 var div1 = document.createElement("div")
 div.innerHTML = '<h5 class="textH5">Укажите дату с:</h5><input type="text" name="dateFrom" value="" placeholder="DD/MM/YYYY" id="fromDate"/><h5 class="textH5">По:</h5><input type="text" name="dateTo" value="" placeholder="DD/MM/YYYY" id="toDate"/>'
-document.querySelector('.wrapper').appendChild(div1)
+//div.className = 'input-dates-from'
+document.querySelector('.settings-pan').appendChild(div1)
 
 var div2 = document.createElement("div")
-div2.id = "checkbDiv"
+div2.className = 'input-checkbox-lable'
+div2.id = 'checkbDiv'
 div2.innerHTML = '<input type="checkbox" id="dsGostR" value="3"><label for="dsGostR">ДС ГОСТ Р</label><input type="checkbox" id="dsTrEaes" value="5"><label for="dsTrEaes">ДС ТР ЕАЭС</label><br><input type="checkbox" id="ssGostR" value="4"><label for="ssGostR">СС ГОСТ Р</label><input type="checkbox" id="ssTrEas" value="6"><label for="ssTrEas">СС ТР ЕАЭС</label><br>'
-//div2.innerHTML = '<select multiple size="4" id="multSelect"><option value="3" >ДС ГОСТ Р</option><option value="5">ДС ТР ЕАЭС</option><option value="4">СС ГОСТ Р</option><option value="6">СС ТР ЕАЭС</option></select>'
-document.querySelector('.wrapper').appendChild(div2)
+document.querySelector('.settings-pan').appendChild(div2)
 
 
 
@@ -74,7 +79,6 @@ function submutFunc() {
         promiseArray.push(SetValue(item,elemnt,arr,index))
         })
       })
-
           Promise.all(promiseArray).then((result) => {
           var table = document.querySelector('.res-table');
           if (!table) {
@@ -83,9 +87,13 @@ function submutFunc() {
             document.querySelector('#mainDiv').appendChild(table)
           }
             table.innerHTML = ''
+            var titleDiv = document.createElement('div')
+            titleDiv.className = 'table-docs-title'
+            titleDiv.innerHTML = 'Все документы'
+            table.appendChild(titleDiv)
           var row = document.createElement("div");
           row.className="res-row";
-          row.innerHTML='<div class="res-cell" color="#9c9ea1">ИСПОЛНИТЕЛЬ</div>';
+          row.innerHTML='<div class="res-cell">ИСПОЛНИТЕЛЬ</div>';
           table.appendChild(row);
           setting.typedoc.forEach(elemnt => {
             var cell = document.createElement("div");
@@ -112,7 +120,7 @@ function submutFunc() {
                 cell.innerHTML = item.name
                 row.appendChild(cell)
 
-                setting.typedoc.forEach(elemnt => {
+                  setting.typedoc.forEach(elemnt => {
                   var cell = document.createElement("div");
                   cell.className = "res-cell"
                   cell.innerHTML = item[elemnt.id]
@@ -188,20 +196,24 @@ function LoadAutorhs() {
     mainDiv.id = "mainDiv";
     var div = document.createElement('div');
     div.id = "All_authors";
-    //div.className = "mySubDiv"
     mainDiv.appendChild(div)
-    Authors.forEach(function(item){
+    var titleDiv = document.createElement('div')
+    titleDiv.className = 'table-perf-title'
+    titleDiv.innerHTML = 'Исполнители'
+    div.appendChild(titleDiv)
+    Authors.forEach(function(item) {
     var subdiv = document.createElement('div');
     subdiv.className = "mySubDiv"
     subdiv.id = item.name
     subdiv.myName = item.name
-    subdiv.addEventListener('click',(e)=>{
-      var o=e.target;
+    subdiv.innerHTML = item.name;
+    subdiv.addEventListener('click',(e)=> {
+      var o = e.target;
       while(o){
         if(o.tagName =='DIV'){
           break;
         }
-        o=o.parentNode;
+        o = o.parentNode;
       }
       if(o){
         if(o.attributes['data-sel']){
@@ -213,16 +225,6 @@ function LoadAutorhs() {
         }
       }
     },false);
-    var b = document.createElement('span');
-    //b.className = "alert alert-success";
-    //b.href="#";
-    b.innerHTML = item.name;
-    subdiv.appendChild(b);
-    var c = document.createElement('span');
-    //c.className = "alert alert-success";
-    //c.href="#";
-    c.innerHTML = item.caseAmount;
-    subdiv.appendChild(c);
     div.appendChild(subdiv);
   })
   document.querySelector('.wrapper').appendChild(mainDiv)

@@ -1,95 +1,147 @@
-.mySubDiv {
-    width: 300px;
+.input-checkbox-lable {
     display: table-cell;
 }
+
+.settings-pan {
+  display: table-row;
+}
+
+.settings-pan-title {
+  color: #993838;
+  font-size: 21px;
+  padding-left: 20px;
+  border-bottom: 1px solid #b4b8bd;
+}
+
+.table-docs-title {
+  color: #e97841;
+  font-size: 21px;
+  padding-left: 10px;
+  border-bottom: 1px solid #b4b8bd;
+}
+
+.table-perf-title {
+  color: #6e910d;
+  font-size: 21px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  border-bottom: 1px solid #b4b8bd;
+}
+
+.mySubDiv {
+margin-bottom: 10px;
+font-size: 11px;
+font-weight: normal;
+line-height: 5px;
+padding: 5px 10px 10px 10px;
+text-align: left;
+text-transform: uppercase;
+border-bottom: 1px solid #b4b8bd;
+font-family: Arial,sans-serif;
+}
+
 .res-cell{
   display: table-cell;
   margin-bottom: 15px;
   font-size: 11px;
   font-weight: normal;
   line-height: 11px;
-  padding: 10px 10px 10px 10px;
+  /*padding: 10px 10px 10px 10px;*/
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: left;
   text-transform: uppercase;
   border-bottom: 1px solid #b4b8bd;
   font-family: Arial,sans-serif;
 
 }
+
 .res-row{
   display: table-row;
 }
+
 .res-table {
   display: table-cell;
   line-height: 1.42857143;
+  padding: 15px;
+  margin-left: 100px;
 }
 
-.res-table > div {
+/*.res-table > div {
   border-style: solid;
   border: 3px;
-}
+}*/
+
 .res-title .res-cell {
   font-weight:bold;
   border-style: solid;
   border: 3px;
 }
+
 #All_authors {
 display: table-cell;
+padding: 15px;
 margin-bottom: 15px;
 }
-#All_authors > div {
+
+/*#All_authors > div {
 	display: table-row;
     border-bottom: 1px solid #b4b8bd;
     padding: 10px 10px 10px 10px;
-}
-#All_authors > div[data-sel="1"] span {
+}*/
+
+#All_authors > div[data-sel="1"] {
   color:#0000FF;
 }
-#All_authors > div > span {
-	display:table-cell;
-}
+
 #fromDate {
   margin-bottom: 1px;
-  margin-left: 5px;
+  margin-left: 15px;
   margin-top: 1px;
 }
+
 #toDate {
-  margin-bottom: 1px;
-  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-left: 15px;
 }
+
 .textH5 {
   margin-bottom: 5px;
-  margin-left: 5px;
+  margin-left: 15px;
 }
+
 #myBtn {
-  margin-left: 5px;
+  margin-left: 15px;
   margin-bottom: 5px;
   margin-top: 5px;
 }
-#multSelect {
-  margin-left: 5px;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
+
 #dsGostR {
-  margin-left: 5px;
+  margin-left: 15px;
   margin-bottom: 5px;
   margin-top: 5px;
 }
 #dsTrEaes {
-  margin-left: 5px;
+  margin-left: 15px;
   margin-bottom: 5px;
   margin-top: 5px;
 }
+
 #ssTrEas {
-  margin-left: 5px;
+  margin-left: 15px;
   margin-bottom: 5px;
   margin-top: 5px;
 }
+
 #ssGostR {
-  margin-left: 5px;
+  margin-left: 15px;
   margin-bottom: 5px;
   margin-top: 5px;
 }
+
 #mainDiv {
   display: table-row;
+  margin: auto;
 }
