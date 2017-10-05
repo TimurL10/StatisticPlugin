@@ -40,28 +40,40 @@ document.querySelector('.wrapper').appendChild(div)
 // document.querySelector('.wrapper').appendChild(div)
 
 var div1 = document.createElement("div")
-div.innerHTML = '<h5 class="textH5">Укажите дату с:</h5><input type="text" name="dateFrom" value="" placeholder="DD/MM/YYYY" id="fromDate"/><h5 class="textH5">По:</h5><input type="text" name="dateTo" value="" placeholder="DD/MM/YYYY" id="toDate"/>'
+div.innerHTML = '<input type="text" name="dateFrom" value="" placeholder="&nbsp;дата начала" id="datepicker"/><input type="text" name="dateTo" value="" placeholder="&nbsp;дата окончания" id="datepicker1"/>'
 //div.className = 'input-dates-from'
+//div.onclick =
 document.querySelector('.settings-pan').appendChild(div1)
 
 var div2 = document.createElement("div")
 div2.className = 'input-checkbox-lable'
 div2.id = 'checkbDiv'
-div2.innerHTML = '<input type="checkbox" id="dsGostR" value="3"><label for="dsGostR">ДС ГОСТ Р</label><input type="checkbox" id="dsTrEaes" value="5"><label for="dsTrEaes">ДС ТР ЕАЭС</label><br><input type="checkbox" id="ssGostR" value="4"><label for="ssGostR">СС ГОСТ Р</label><input type="checkbox" id="ssTrEas" value="6"><label for="ssTrEas">СС ТР ЕАЭС</label><br>'
+div2.innerHTML = '<input type="checkbox" id="dsGostR" value="3"><label for="dsGostR">&nbsp;ДС ГОСТ Р</label><input type="checkbox" id="dsTrEaes" value="5"><label for="dsTrEaes">&nbsp;ДС ТР ЕАЭС</label><input type="checkbox" id="ssGostR" value="4"><label for="ssGostR">&nbsp;СС ГОСТ Р</label><input type="checkbox" id="ssTrEas" value="6"><label for="ssTrEas">&nbsp;СС ТР ЕАЭС</label><br>'
 document.querySelector('.settings-pan').appendChild(div2)
 
+div.setAttribute('data-value', '50');
+document.querySelector('.wrapper').appendChild(div)
+
+$( function() {
+$( "#datepicker" ).datepicker();
+});
+$( function() {
+$( "#datepicker1" ).datepicker();
+});
 
 
+var dateSelect = document.querySelector('#datepicker');
+console.log(dateSelect.value);
 
 
 var buttonDate = document.createElement("button")
-buttonDate.innerHTML = "Submit"
+buttonDate.innerHTML = "Получить отчет"
 buttonDate.id = "myBtn"
 document.querySelector('.wrapper').appendChild(buttonDate)
 buttonDate.addEventListener('click',submutFunc,false);
 function submutFunc() {
-  setting.fromDate = document.querySelector("#fromDate").value
-  setting.toDate = document.querySelector("#toDate").value
+  setting.fromDate = document.querySelector("#datepicker").value
+  setting.toDate = document.querySelector("#datepicker1").value
   setting.typedoc = []
   //Set array of checked agents
   var i = document.querySelectorAll("#checkbDiv input")
