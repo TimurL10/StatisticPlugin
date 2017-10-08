@@ -1,0 +1,64 @@
+function LoadAutorhs() {
+  fetch("https://stage-2-docs.advance-docs.ru/Claim",{credentials: "include"})
+  .then((responce)=>{
+    return responce.text()
+  }).then((text)=>{
+    parser = new DOMParser();
+    doc = parser.parseFromString(text, "text/html");
+    var arr = doc.querySelectorAll("#SelectedExecutorId option")
+    arr.forEach(function(item, i) {
+      if (i == 0) {
+        item.innerHTML = "Для всех:"
+      }
+        Authors.push({
+        name: item.innerHTML,
+        value: item.value,
+        caseAmount : "",
+        turn : "off"
+      })
+    });
+    Authors.splice(0,1)
+  }).then(()=>{
+    var mainDiv = document.createElement('div');
+    mainDiv.id = "mainDiv";
+    var div = document.createElement('div');
+    div.id = "All_authors";
+    mainDiv.appendChild(div)
+    var titleDiv = document.createElement('div')
+    titleDiv.className = 'table-perf-title'
+    titleDiv.innerHTML = 'Исполнители'
+    div.appendChild(titleDiv)
+    Authors.forEach(function(item) {
+    var subdiv = document.createElement('div');
+    subdiv.className = "mySubDiv"
+    subdiv.id = item.name
+    subdiv.myName = item.name
+    subdiv.innerHTML = item.name
+    subdiv.addEventListener('click',(e)=> {
+      var o = e.target;
+      while(o){
+        if(o.tagName =='DIV'){
+          break;
+        }
+        o = o.parentNode;
+      }
+      if(o){
+        if(o.attributes['data-sel']){
+          o.removeAttribute('data-sel');
+          item.turn = "off"
+        } else {
+          item.turn = "on"
+          o.setAttribute('data-sel', 1);
+        }
+      }
+    },false);
+    div.appendChild(subdiv);
+    var input = document.createElement('input');
+    input.className = "input-checkbox-name"
+    input.setAttribute('type','checkbox')
+    subdiv.id = item.value
+    subdiv.appendChild(input)
+  })
+  document.querySelector('.wrapper').appendChild(mainDiv)
+})
+};

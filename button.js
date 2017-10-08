@@ -1,55 +1,194 @@
 
-var div = document.createElement("div")
-div.innerHTML = '<a href="#" id="name" align="center"></a><br><a href="#" id="status" align="left"></a><br>'
-document.querySelector('.wrapper').appendChild(div)
-
-
-
-var div1 = document.createElement("div")
-div.innerHTML = '<h5>Укажите дату с:</h5><br><input type="text" name="date" class="form_datetime" id="fromDate" value="" placeholder="DD/MM/YYYY"/><h5>По:</h5><br><input type="text" name="date" class="form_datetime" id="toDate" value="" placeholder="DD/MM/YYYY"/><br>'
-document.querySelector('.wrapper').appendChild(div1)
-
-var buttonDate = document.createElement("button")
-buttonDate.innerHTML = "Submit"
-buttonDate.style = "mybtn"
-buttonDate.onclick = takeDates
-document.querySelector('.wrapper').appendChild(buttonDate)
-buttonDate.addEventListener('click',(e)=>{
-  //takeDates()
-  var num = document.querySelectorAll('div[data-sel]')
-},false);
-
-
-LoadAutorhs();
-
-
-function takeDates(){
-  fromDate = document.querySelector("#fromDate").value
-  toDate = document.querySelector("#toDate").value
-  document.querySelector("#fromDate").value = ""
-  document.querySelector("#toDate").value = ""
-  LoadAutorhs(fromDate, toDate)
-}
-
-function takeNames(itemName){
-  names.push(itemName)
-  LoadSelectedAutorhs(names, takeDates)
-}
-
-
 var advance = {
   status: "",
   name : "",
   value : "",
   caseAmount : ""
 }
-var Authors = []
+var setting = {
+}
+var Authors = [{
+  name: "",
+  value: "",
+  caseAmount: "",
+  turn : "",
+  dsGostR: "",
+  dsTrEas: "",
+  ssGostR: "",
+  ssTrEas: ""
+}]
 var arpromis = []
-var names =[]
+var arrSelectedAutors =[]
 
-// LoadAutorhs()
+function move() {
+  var inf = document.querySelector('.info-div')
+  if (!inf){
+  var div2 = document.createElement('div');
+  div2.className = "info-div"
+  div2.innerHTML = 'Please wait..'
+  document.querySelector('.table-perf-title').appendChild(div2)
+}
+}
 
-function LoadAutorhs(fromDate, toDate) {
+
+
+
+
+var div = document.createElement("div")
+div.className="ldBar"
+div.setAttribute('data-value', '50');
+document.querySelector('.wrapper').appendChild(div)
+
+var div = document.createElement("div")
+div.innerHTML = 'Настройки'
+div.className = 'settings-pan-title'
+document.querySelector('.wrapper').appendChild(div)
+
+var div = document.createElement("div")
+div.className = 'settings-pan'
+document.querySelector('.wrapper').appendChild(div)
+
+var div1 = document.createElement("div")
+div.innerHTML = '<input type="text" name="dateFrom" value="" placeholder="&nbsp;дата начала" id="datepicker"/><input type="text" name="dateTo" value="" placeholder="&nbsp;дата окончания" id="datepicker1"/>'
+document.querySelector('.settings-pan').appendChild(div1)
+
+var div2 = document.createElement("div")
+div2.className = 'input-checkbox-lable'
+div2.id = 'checkbDiv'
+div2.innerHTML = '<input type="checkbox" id="dsGostR" value="3"><label for="dsGostR">&nbsp;ДС ГОСТ Р</label><input type="checkbox" id="dsTrEaes" value="5"><label for="dsTrEaes">&nbsp;ДС ТР ЕАЭС</label><input type="checkbox" id="ssGostR" value="4"><label for="ssGostR">&nbsp;СС ГОСТ Р</label><input type="checkbox" id="ssTrEas" value="6"><label for="ssTrEas">&nbsp;СС ТР ЕАЭС</label><br>'
+document.querySelector('.settings-pan').appendChild(div2)
+
+div.setAttribute('data-value', '50');
+document.querySelector('.wrapper').appendChild(div)
+
+$( function() {
+$( "#datepicker" ).datepicker();
+});
+$( function() {
+$( "#datepicker1" ).datepicker();
+});
+
+var buttonDate = document.createElement("button")
+buttonDate.innerHTML = "Получить отчет"
+buttonDate.id = "myBtn"
+document.querySelector('.wrapper').appendChild(buttonDate)
+buttonDate.addEventListener('click',submutFunc,false);
+function submutFunc() {
+  setting.fromDate = document.querySelector("#datepicker").value
+  setting.toDate = document.querySelector("#datepicker1").value
+  setting.typedoc = []
+  //Set array of checked agents
+  var i = document.querySelectorAll("#checkbDiv input")
+    i.forEach(item => {
+      if(item.checked) {
+        setting.typedoc.push(item)
+      }
+  })
+      var promiseArray = []
+      Authors.filter(item => {
+      if(item.turn == "on") {return item}
+      move()
+    })
+    .forEach((item,index,arr) => {
+        setting.typedoc.forEach(elemnt => {
+        promiseArray.push(SetValue(item,elemnt,arr,index))
+        })
+      })
+          Promise.all(promiseArray).then((result) => {
+          var table = document.querySelector('.res-table');
+          if (!table) {
+            table = document.createElement("div");
+            table.className = "res-table"
+            document.querySelector('#mainDiv').appendChild(table)
+          }
+
+            table.innerHTML = ''
+            var inf = document.querySelector('.info-div')
+            inf.parentNode.removeChild( inf );
+            var titleDiv = document.createElement('div')
+            titleDiv.className = 'table-docs-title'
+            titleDiv.innerHTML = 'Все документы'
+            table.appendChild(titleDiv)
+          var row = document.createElement("div");
+          row.className="res-row";
+          row.innerHTML='<div class="res-cell">ИСПОЛНИТЕЛЬ</div>';
+          table.appendChild(row);
+          setting.typedoc.forEach(elemnt => {
+            var cell = document.createElement("div");
+            cell.className = "res-cell"
+            cell.setAttribute('color', '#9c9ea1');
+            switch(elemnt.id) {
+              case 'dsGostR' : cell.innerHTML = "ДС ГОСТ Р";
+              break;
+              case 'dsTrEaes' : cell.innerHTML = "ДС ТР ЕАЭС";
+              break;
+              case 'ssGostR' : cell.innerHTML = "СС ГОСТ Р";
+              break;
+              case 'ssTrEas' : cell.innerHTML = "СС ТР ЕАЭС";
+              break;
+            }
+            row.appendChild(cell)
+          })
+                Authors.filter(item => (item.turn == "on")).forEach(promiss=> {
+                var item = promiss
+                var row = document.createElement("div");
+                row.className="res-row"
+                var cell = document.createElement("div");
+                cell.className = "res-cell"
+                cell.innerHTML = item.name
+                row.appendChild(cell)
+
+                  setting.typedoc.forEach(elemnt => {
+                  var cell = document.createElement("div");
+                  cell.className = "res-cell"
+                  cell.innerHTML = item[elemnt.id]
+                  row.appendChild(cell)
+           })
+           table.appendChild(row)
+        })
+      })
+}
+
+function SetValue(item,elemnt,arr,index) {
+  return Promise.resolve().then(()=> {
+    return FindValue({
+      value:item.value,
+       type_value : elemnt.value,
+       fromDate : setting.fromDate,
+       toDate: setting.toDate
+    }).then(object => {
+      arr[index][elemnt.id] =  object;
+      return arr[index]
+})
+})
+}
+
+function FindValue(object) {
+  var body  = new FormData();
+  body.append("SelectedExecutorId", object.value);
+  body.append("SelectedStartDate", object.fromDate);
+  body.append("SelectEndDate", object.toDate);
+  body.append("SelectedDocumentTypeId", object.type_value);
+  return  fetch("https://stage-2-docs.advance-docs.ru/Claim",{
+    method : 'POST',
+    body : body,
+    credentials: "include"
+}).then(function(responce){
+    return responce.text()
+}).then(function(text){
+  parser = new DOMParser();
+  doc = parser.parseFromString(text, "text/html");
+  return doc.querySelector("table.inner tbody tr td").innerHTML;
+}).catch((err)=>{
+  return "Ошибка";
+})
+}
+
+LoadAutorhs()
+
+
+
+function LoadAutorhs() {
   fetch("https://stage-2-docs.advance-docs.ru/Claim",{credentials: "include"})
   .then((responce)=>{
     return responce.text()
@@ -58,202 +197,53 @@ function LoadAutorhs(fromDate, toDate) {
     doc = parser.parseFromString(text, "text/html");
     var arr = doc.querySelectorAll("#SelectedExecutorId option")
     arr.forEach(function(item, i) {
+      if (i == 0) {
+        item.innerHTML = "Для всех:"
+      }
         Authors.push({
         name: item.innerHTML,
         value: item.value,
-        caseAmount : ""
+        caseAmount : "",
+        turn : "off"
       })
     });
     Authors.splice(0,1)
   }).then(()=>{
-    return
-}).then(()=>{
+    var mainDiv = document.createElement('div');
+    mainDiv.id = "mainDiv";
     var div = document.createElement('div');
     div.id = "All_authors";
-
-    Authors.forEach(function(item){
+    mainDiv.appendChild(div)
+    var titleDiv = document.createElement('div')
+    titleDiv.className = 'table-perf-title'
+    titleDiv.innerHTML = 'Исполнители'
+    div.appendChild(titleDiv)
+    Authors.forEach(function(item) {
     var subdiv = document.createElement('div');
-    subdiv.id = item.value
+    subdiv.className = "mySubDiv"
+    subdiv.id = item.name
     subdiv.myName = item.name
-    subdiv.addEventListener('click',(e)=>{
-      var o=e.target;
+    subdiv.innerHTML = item.name
+    subdiv.addEventListener('click',(e)=> {
+      var o = e.target;
       while(o){
-        if(o.tagName=='DIV'){
+        if(o.tagName =='DIV'){
           break;
         }
-        o=o.parentNode;
+        o = o.parentNode;
       }
       if(o){
         if(o.attributes['data-sel']){
           o.removeAttribute('data-sel');
+          item.turn = "off"
         } else {
-          o.setAttribute('data-sel',1);
+          item.turn = "on"
+          o.setAttribute('data-sel', 1);
         }
       }
     },false);
-    //subdiv.style.marginBottom = "20px"
-    var b = document.createElement('span');
-    b.className = "alert alert-success";
-    b.href="#";
-    b.innerHTML = item.name;
-//    b.onclick = takeNames(item.name)
-    //b.style.marginRight = "100px"
-    subdiv.appendChild(b);
-    var b = document.createElement('span');
-    b.className = "alert alert-success";
-    b.href="#";
-    b.innerHTML = item.caseAmount;
-    subdiv.appendChild(b);
-    div.appendChild(subdiv);
+    div.appendChild(subdiv);    
   })
-  document.querySelector('.wrapper').appendChild(div)
-
+  document.querySelector('.wrapper').appendChild(mainDiv)
 })
 };
-
-
-
-
-  function setCaseAmount(names, fromDate, toDate){
-    var body  = new FormData();
-    body.append("SelectedExecutorId", item.id);
-    body.append("SelectedStartDate", fromDate);
-    body.append("SelectEndDate", toDate);
-    return  fetch("https://stage-2-docs.advance-docs.ru/Claim",{
-      method : 'POST',
-      body : body,
-      credentials: "include"
-  }).then(function(responce){
-      return responce.text()
- }).then(function(text){
-    parser = new DOMParser();
-    doc = parser.parseFromString(text, "text/html");
-   item.caseAmount = doc.querySelector("table.inner tbody tr td").innerHTML;
-   return
- }).catch((err)=>{
-   item.caseAmount = "Ошибка";
- })
- };
-
-
- function takeDates(){
-   fromDate = document.querySelector("#fromDate").value
-   toDate = document.querySelector("#toDate").value
-   document.querySelector("#fromDate").value = ""
-   document.querySelector("#toDate").value = ""
-   LoadAutorhs(fromDate, toDate)
- }
-
- function takeNames(itemName){
-   names.push(itemName)
-   setCaseAmount(names, takeDates)
- }
-
-
- var advance = {
-   status: "",
-   name : "",
-   value : "",
-   caseAmount : ""
- }
- var Authors = []
- var arpromis = []
- var names =[]
-
- // LoadAutorhs()
-
- function LoadSelectedAutorhs(names,fromDate, toDate) {
- //   fetch("https://stage-2-docs.advance-docs.ru/Claim",{credentials: "include"})
- //   .then((responce)=>{
- //     return responce.text()
- //   }).then((text)=>{
- //     parser = new DOMParser();
- //     doc = parser.parseFromString(text, "text/html");
- //     var arr = doc.querySelectorAll("#SelectedExecutorId option")
- //     arr.forEach(function(item, i) {
- //         Authors.push({
- //         name: item.innerHTML,
- //         value: item.value,
- //         caseAmount : ""
- //       })
- //     });
- //     Authors.splice(0,1)
- //   }).then(()=>{
- //     return
- // }).then(()=>{
-   arpromis = Authors.map(item=>setCaseAmount(names, fromDate, toDate));
-   return Promise.all(arpromis).then(()=>{
-     var div = document.createElement('div');
-     div.id = "All_authors";
-     Authors.forEach(function(item){
-     var subdiv = document.createElement('div');
-     subdiv.id = names.value
-     subdiv.myName = names.name
-     subdiv.addEventListener('click',(e)=>{
-       var o=e.target;
-       while(o){
-         if(o.tagName=='DIV'){
-           break;
-         }
-         o=o.parentNode;
-       }
-       if(o){
-         if(o.attributes['data-sel']){
-           o.removeAttribute('data-sel');
-         } else {
-           o.setAttribute('data-sel',1);
-         }
-       }
-     },false);
-     //subdiv.style.marginBottom = "20px"
-     var b = document.createElement('span');
-     b.className = "alert alert-success";
-     b.href="#";
-     b.innerHTML = names.name;
- //    b.onclick = takeNames(item.name)
-     //b.style.marginRight = "100px"
-     subdiv.appendChild(b);
-     var b = document.createElement('span');
-     b.className = "alert alert-success";
-     b.href="#";
-     b.innerHTML = names.caseAmount;
-     subdiv.appendChild(b);
-     div.appendChild(subdiv);
-   })
-   document.querySelector('.wrapper').appendChild(div)
- })
- }
- 
-
-
-
- // var dots = window.setInterval( function() {
- //     var wait = document.getElementById("wait");
- //     if ( wait.innerHTML.length > 2 )
- //         wait.innerHTML = "";
- //     else
- //         wait.innerHTML += ".";
- //     }, 500);
-
-
-
-// function CheckSession(argument) {
-// fetch("https://stage-2-docs.advance-docs.ru/",{
-//   credentials: "include"
-// }).then(function(responce){
-//  return responce.text()
-// }).then(function(text){
-//   parser = new DOMParser();
-//   doc = parser.parseFromString(text, "text/html");
-//   if(doc.querySelector(".btn-submit")){
-//     advance.status = "Off"
-//     advance.name = ""
-//   }
-//   else{
-//     advance.status = "On"
-//     advance.name = doc.querySelector(".admin-menu a").innerHTML
-//   }
-//   document.querySelector('#name').innerHTML = advance.name;
-//   document.querySelector('#status').innerHTML =advance.status;
-// })
-// }

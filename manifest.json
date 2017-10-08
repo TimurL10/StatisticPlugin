@@ -25,16 +25,17 @@
      "notifications",
      "alarms",
      "<all_urls>",
-     "*://*.aesthetic.ru/*",
-     "*://10.250.4.13/*",
-     "*://*.advance-docs.ru/*"
+     "*://*.advance-docs.ru/*",
+     "*://code.jquery.com/jquery-1.12.4.js",
+     "*://code.jquery.com/ui/1.12.1/jquery-ui.js"
  ],
 
  "content_scripts": [
   {
     "matches": ["*://stage-2-docs.advance-docs.ru/Assistant"],
-    "js": ["button.js"],
+    "js": ["jquery-1.12.4.js","jquery-ui.js", "button.js"],
     "css": ["window.css"]
+
   }
 ]
 
