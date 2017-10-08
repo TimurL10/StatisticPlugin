@@ -1,2 +1,0 @@
-arpromis = Authors.map(item=>setCaseAmount(item,fromDate, toDate));
-return Promise.all(arpromis).then(()=>{
