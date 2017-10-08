@@ -20,6 +20,7 @@ var Authors = [{
 var arpromis = []
 var arrSelectedAutors =[]
 
+//progress bar
 function move() {
   var inf = document.querySelector('.info-div')
   if (!inf){
@@ -29,11 +30,6 @@ function move() {
   document.querySelector('.table-perf-title').appendChild(div2)
 }
 }
-
-
-
-
-
 var div = document.createElement("div")
 div.className="ldBar"
 div.setAttribute('data-value', '50');
@@ -111,12 +107,12 @@ function submutFunc() {
             table.appendChild(titleDiv)
           var row = document.createElement("div");
           row.className="res-row";
-          row.innerHTML='<div class="res-cell">ИСПОЛНИТЕЛЬ</div>';
+          row.innerHTML='<div class="res-cell" style="color:#9c9ea1;">ИСПОЛНИТЕЛЬ</div>';
           table.appendChild(row);
           setting.typedoc.forEach(elemnt => {
             var cell = document.createElement("div");
             cell.className = "res-cell"
-            cell.setAttribute('color', '#9c9ea1');
+            cell.setAttribute("style", "color: #9c9ea1;");
             switch(elemnt.id) {
               case 'dsGostR' : cell.innerHTML = "ДС ГОСТ Р";
               break;
@@ -218,6 +214,10 @@ function LoadAutorhs() {
     titleDiv.className = 'table-perf-title'
     titleDiv.innerHTML = 'Исполнители'
     div.appendChild(titleDiv)
+    var chkbxSelectAll = document.createElement('input')
+    chkbxSelectAll.id = 'chkbx-Select-All'
+    chkbxSelectAll.setAttribute('type','checkbox')
+
     Authors.forEach(function(item) {
     var subdiv = document.createElement('div');
     subdiv.className = "mySubDiv"
@@ -242,7 +242,7 @@ function LoadAutorhs() {
         }
       }
     },false);
-    div.appendChild(subdiv);    
+    div.appendChild(subdiv);
   })
   document.querySelector('.wrapper').appendChild(mainDiv)
 })
