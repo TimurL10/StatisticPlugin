@@ -1,4 +1,3 @@
-
 var advance = {
   status: "",
   name : "",
@@ -20,7 +19,16 @@ var Authors = [{
 var arpromis = []
 var arrSelectedAutors =[]
 
-
+//progress bar
+function move() {
+  var inf = document.querySelector('.info-div')
+  if (!inf){
+  var div2 = document.createElement('div');
+  div2.className = "info-div"
+  div2.innerHTML = 'Please wait..'
+  document.querySelector('.table-perf-title').appendChild(div2)
+}
+}
 var div = document.createElement("div")
 div.className="ldBar"
 div.setAttribute('data-value', '50');
@@ -35,14 +43,8 @@ var div = document.createElement("div")
 div.className = 'settings-pan'
 document.querySelector('.wrapper').appendChild(div)
 
-// var div = document.createElement("div")
-// div.innerHTML = '<a href="#" id="name" align="center"></a><br><a href="#" id="status" align="left"></a><br>'
-// document.querySelector('.wrapper').appendChild(div)
-
 var div1 = document.createElement("div")
 div.innerHTML = '<input type="text" name="dateFrom" value="" placeholder="&nbsp;дата начала" id="datepicker"/><input type="text" name="dateTo" value="" placeholder="&nbsp;дата окончания" id="datepicker1"/>'
-//div.className = 'input-dates-from'
-//div.onclick =
 document.querySelector('.settings-pan').appendChild(div1)
 
 var div2 = document.createElement("div")
@@ -60,11 +62,6 @@ $( "#datepicker" ).datepicker();
 $( function() {
 $( "#datepicker1" ).datepicker();
 });
-
-
-var dateSelect = document.querySelector('#datepicker');
-console.log(dateSelect.value);
-
 
 var buttonDate = document.createElement("button")
 buttonDate.innerHTML = "Получить отчет"
@@ -85,6 +82,7 @@ function submutFunc() {
       var promiseArray = []
       Authors.filter(item => {
       if(item.turn == "on") {return item}
+      move()
     })
     .forEach((item,index,arr) => {
         setting.typedoc.forEach(elemnt => {
@@ -98,19 +96,22 @@ function submutFunc() {
             table.className = "res-table"
             document.querySelector('#mainDiv').appendChild(table)
           }
+
             table.innerHTML = ''
+            var inf = document.querySelector('.info-div')
+            inf.parentNode.removeChild( inf );
             var titleDiv = document.createElement('div')
             titleDiv.className = 'table-docs-title'
             titleDiv.innerHTML = 'Все документы'
             table.appendChild(titleDiv)
           var row = document.createElement("div");
           row.className="res-row";
-          row.innerHTML='<div class="res-cell">ИСПОЛНИТЕЛЬ</div>';
+          row.innerHTML='<div class="res-cell" style="color:#9c9ea1;">ИСПОЛНИТЕЛЬ</div>';
           table.appendChild(row);
           setting.typedoc.forEach(elemnt => {
             var cell = document.createElement("div");
             cell.className = "res-cell"
-            cell.setAttribute('color', '#9c9ea1');
+            cell.setAttribute("style", "color: #9c9ea1;");
             switch(elemnt.id) {
               case 'dsGostR' : cell.innerHTML = "ДС ГОСТ Р";
               break;
@@ -140,11 +141,8 @@ function submutFunc() {
            })
            table.appendChild(row)
         })
-
-
       })
 }
-
 
 function SetValue(item,elemnt,arr,index) {
   return Promise.resolve().then(()=> {
@@ -183,6 +181,8 @@ function FindValue(object) {
 
 LoadAutorhs()
 
+
+
 function LoadAutorhs() {
   fetch("https://stage-2-docs.advance-docs.ru/Claim",{credentials: "include"})
   .then((responce)=>{
@@ -213,12 +213,16 @@ function LoadAutorhs() {
     titleDiv.className = 'table-perf-title'
     titleDiv.innerHTML = 'Исполнители'
     div.appendChild(titleDiv)
+    var chkbxSelectAll = document.createElement('input')
+    chkbxSelectAll.id = 'chkbx-Select-All'
+    chkbxSelectAll.setAttribute('type','checkbox')
+
     Authors.forEach(function(item) {
     var subdiv = document.createElement('div');
     subdiv.className = "mySubDiv"
     subdiv.id = item.name
     subdiv.myName = item.name
-    subdiv.innerHTML = item.name;
+    subdiv.innerHTML = item.name
     subdiv.addEventListener('click',(e)=> {
       var o = e.target;
       while(o){

@@ -1,3 +1,17 @@
+.mySubDiv:hover, .mySubDiv:active {
+    color: #4CAF50;
+}
+
+.info-div {
+color: #993838;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #4CAF50;
+}
+
 .input-checkbox-lable {
   margin-left: 15px;
     display: table-cell;
