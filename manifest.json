@@ -32,9 +32,9 @@
 
  "content_scripts": [
   {
-    "matches": ["*://stage-2-docs.advance-docs.ru/assistant"],
-    "js": ["loading-bar.js" ,"loading-bar.min.js","jquery-1.12.4.js","jquery-ui.js","button.js"],
-    "css": ["loading-bar.css","window.css"]
+    "matches": ["*://stage-2-docs.advance-docs.ru/Assistant"],
+    "js": ["jquery-1.12.4.js","jquery-ui.js","button.js"],
+    "css": ["window.css"]
 
   }
 ]

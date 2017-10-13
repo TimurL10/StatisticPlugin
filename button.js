@@ -29,6 +29,7 @@ function move() {
   document.querySelector('.table-perf-title').appendChild(div2)
 }
 }
+
 var div = document.createElement("div")
 div.className="ldBar"
 div.setAttribute('data-value', '50');
@@ -90,13 +91,16 @@ function submutFunc() {
         })
       })
           Promise.all(promiseArray).then((result) => {
+            uniqueArray = result.filter(function(item, pos) {
+              return result.indexOf(item) == pos;
+              })
+
           var table = document.querySelector('.res-table');
           if (!table) {
             table = document.createElement("div");
             table.className = "res-table"
             document.querySelector('#mainDiv').appendChild(table)
           }
-
             table.innerHTML = ''
             var inf = document.querySelector('.info-div')
             inf.parentNode.removeChild( inf );
@@ -124,8 +128,27 @@ function submutFunc() {
             }
             row.appendChild(cell)
           })
-                Authors.filter(item => (item.turn == "on")).forEach(promiss=> {
-                var item = promiss
+          var cell = document.createElement("div");
+          cell.className="res-cell";
+          cell.innerHTML='ПРОЦЕНТЫ';
+          cell.setAttribute("style", "color: #9c9ea1;");
+          row.appendChild(cell);
+                var docsSum = [];
+                uniqueArray.forEach(item => {
+              if(item.dsGostR)
+                var x = parseInt(item.dsGostR.match(/\d./g),10)
+              if(item.dsTrEaes)
+                var y = parseInt(item.dsTrEaes.match(/\d./g),10)
+              if(item.ssGostR)
+                var z = parseInt(item.ssGostR.match(/\d./g),10)
+              if(item.ssTrEas)
+                var i = parseInt(item.ssTrEas.match(/\d./g),10)
+                var sum = x + y + z + i;
+                docsSum.push(sum);
+              })
+
+                var oneHundredPr = docsSum.reduce(add, 0)
+                Authors.filter(item => (item.turn == "on")).forEach((item,index) => {
                 var row = document.createElement("div");
                 row.className="res-row"
                 var cell = document.createElement("div");
@@ -138,10 +161,26 @@ function submutFunc() {
                   cell.className = "res-cell"
                   cell.innerHTML = item[elemnt.id]
                   row.appendChild(cell)
+
            })
+           var a;
+           arrayLinkText.forEach(item => {
+             a = item;
+          })
+
+
+           var cell = document.createElement("div");
+           cell.className = "res-cell"
+           cell.innerHTML = '<button id="btn-details">details</button>'
+           cell.addEventListener('click',submutFunc1,false);
+           function submutFunc1() {
+             document.body.innerHTML = a
+           }
+           row.appendChild(cell)
            table.appendChild(row)
-        })
+
       })
+    })
 }
 
 function SetValue(item,elemnt,arr,index) {
@@ -157,7 +196,7 @@ function SetValue(item,elemnt,arr,index) {
 })
 })
 }
-
+var arrayLinkText = [];
 function FindValue(object) {
   var body  = new FormData();
   body.append("SelectedExecutorId", object.value);
@@ -171,17 +210,26 @@ function FindValue(object) {
 }).then(function(responce){
     return responce.text()
 }).then(function(text){
+  arrayLinkText.push(text);
+
+  // var cell = document.createElement("a");
+  // cell.innerHTML = "hi"
+  // setAttribute('href', this.document.body.innerHTML = text)
+  // document.querySelector('.res-table').appendChild(cell)
+
+  //   window.open('about:blank').addEventListener('load',function(){
+  //   this.document.body.innerHTML = text;
+  // },false);
   parser = new DOMParser();
   doc = parser.parseFromString(text, "text/html");
-  return doc.querySelector("table.inner tbody tr td").innerHTML;
+  var result = doc.querySelector("table.inner tbody tr td").innerHTML;
+  return result.replace(/^.{5}./, "");
 }).catch((err)=>{
   return "Ошибка";
 })
 }
 
 LoadAutorhs()
-
-
 
 function LoadAutorhs() {
   fetch("https://stage-2-docs.advance-docs.ru/Claim",{credentials: "include"})
@@ -216,7 +264,6 @@ function LoadAutorhs() {
     var chkbxSelectAll = document.createElement('input')
     chkbxSelectAll.id = 'chkbx-Select-All'
     chkbxSelectAll.setAttribute('type','checkbox')
-
     Authors.forEach(function(item) {
     var subdiv = document.createElement('div');
     subdiv.className = "mySubDiv"
@@ -246,3 +293,8 @@ function LoadAutorhs() {
   document.querySelector('.wrapper').appendChild(mainDiv)
 })
 };
+
+//sum of documents
+function add(a, b) {
+  return a + b;
+}
