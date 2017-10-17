@@ -133,6 +133,13 @@ function submutFunc() {
           cell.innerHTML='ПРОЦЕНТЫ';
           cell.setAttribute("style", "color: #9c9ea1;");
           row.appendChild(cell);
+
+          var cell = document.createElement("div");
+          cell.className="res-cell";
+          cell.innerHTML='ДЕТАЛИ';
+          cell.setAttribute("style", "color: #9c9ea1;");
+          row.appendChild(cell);
+
                 var docsSum = [];
                 uniqueArray.forEach(item => {
               if(item.dsGostR)
@@ -163,18 +170,22 @@ function submutFunc() {
                   row.appendChild(cell)
 
            })
-           var a;
-           arrayLinkText.forEach(item => {
-             a = item;
-          })
-
+           // Details
+           var cell = document.createElement("div");
+           cell.className = "res-cell"
+           cell.innerHTML  = parseInt((docsSum[index]*100)/oneHundredPr,10) + " %"
+           row.appendChild(cell)
+           table.appendChild(row)
 
            var cell = document.createElement("div");
            cell.className = "res-cell"
-           cell.innerHTML = '<button id="btn-details">details</button>'
-           cell.addEventListener('click',submutFunc1,false);
-           function submutFunc1() {
-             document.body.innerHTML = a
+           cell.innerHTML = '<button id="btn-details">детали</button>'
+           cell.addEventListener('click',submitFunc1,false);
+           function submitFunc1() {
+              FindValueForAll(item)
+              .then(text=>{
+                document.body.innerHTML = text;
+              })
            }
            row.appendChild(cell)
            table.appendChild(row)
@@ -196,7 +207,7 @@ function SetValue(item,elemnt,arr,index) {
 })
 })
 }
-var arrayLinkText = [];
+
 function FindValue(object) {
   var body  = new FormData();
   body.append("SelectedExecutorId", object.value);
@@ -210,16 +221,6 @@ function FindValue(object) {
 }).then(function(responce){
     return responce.text()
 }).then(function(text){
-  arrayLinkText.push(text);
-
-  // var cell = document.createElement("a");
-  // cell.innerHTML = "hi"
-  // setAttribute('href', this.document.body.innerHTML = text)
-  // document.querySelector('.res-table').appendChild(cell)
-
-  //   window.open('about:blank').addEventListener('load',function(){
-  //   this.document.body.innerHTML = text;
-  // },false);
   parser = new DOMParser();
   doc = parser.parseFromString(text, "text/html");
   var result = doc.querySelector("table.inner tbody tr td").innerHTML;
@@ -228,6 +229,27 @@ function FindValue(object) {
   return "Ошибка";
 })
 }
+
+// Data for Detailes button
+function FindValueForAll(item) {
+  var body  = new FormData();
+  body.append("SelectedExecutorId", item.value);
+  body.append("SelectedStartDate", item.fromDate);
+  body.append("SelectEndDate", item.toDate);
+  return  fetch("https://stage-2-docs.advance-docs.ru/Claim",{
+    method : 'POST',
+    body : body,
+    credentials: "include"
+}).then(function(responce){
+    return responce.text()
+}).then(function(text){
+    return text;
+}).catch((err)=>{
+  return "Ошибка";
+})
+}
+
+//--------********************************************************************--------//
 
 LoadAutorhs()
 
