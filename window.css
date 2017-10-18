@@ -1,3 +1,42 @@
+.button-container {
+    float: left;
+    display: block;
+    text-align: center;
+}
+
+.col-xs-24 {
+    width: 100%;
+}
+
+.inner {
+    width: 1200px;
+    min-width: 1200px;
+    margin: 0 auto;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-bottom: 0px;
+        margin-left: auto;
+}
+
+.footer {
+    bottom: 0;
+    z-index: 105;
+    width: 100%;
+    padding-top: 11px;
+    padding-bottom: 10px;
+    background: url(/Content/Images/bg_2.png) repeat;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: url("/Content/Images/bg_2.png");
+        background-repeat: repeat;
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-origin: padding-box;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-size: auto auto;
+    box-shadow: 0 0 3px rgba(0,0,0,.1);
+}
+
 .mySubDiv:hover, .mySubDiv:active {
     color: #4CAF50;
 }
@@ -19,7 +58,21 @@ color: #993838;
 
 .settings-pan {
   display: table-row;
+  background: rgba(0,0,0,.02);
+  border: 1px solid #d7d7d7;
+  padding: 10px 10px 0;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
+
+/*.box-1 {
+display: table-row;
+background: rgba(0,0,0,.02);
+border: 1px solid #d7d7d7;
+padding: 10px 10px 0;
+border-radius: 6px;
+box-sizing: border-box;
+}*/
 
 .settings-pan-title {
   color: #993838;

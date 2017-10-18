@@ -30,6 +30,7 @@ function move() {
 }
 }
 
+
 var div = document.createElement("div")
 div.className="ldBar"
 div.setAttribute('data-value', '50');
@@ -56,6 +57,12 @@ document.querySelector('.settings-pan').appendChild(div2)
 
 div.setAttribute('data-value', '50');
 document.querySelector('.wrapper').appendChild(div)
+
+var FooterDiv = document.createElement("div")
+FooterDiv.innerHTML = '<footer class="footer" id="footer_content" style="display: block; position: fixed;"><div class="inner"><div class="row"><div class="content col-xs-24"><div class="button-container" style="width: 33.3333%;"><a data-action="loadoptions" class="btn btn-primary create-documents">Получить отчет</a></div><div class="button-container" style="width: 33.3333%;"><a data-action="selectcert" class="btn btn-primary create-documents">Выбрать сертификат</a></div><div class="button-container" style="width: 33.3333%;"><a data-action="saveoptions" class="btn btn-primary create-documents">Сохранить настройки</a></div></div></div></div></footer>'
+document.querySelector('.wrapper').appendChild(FooterDiv)
+
+
 
 $( function() {
 $( "#datepicker" ).datepicker();
@@ -142,6 +149,7 @@ function submutFunc() {
 
                 var docsSum = [];
                 uniqueArray.forEach(item => {
+                  x = 0, y= 0, z= 0, i = 0;
               if(item.dsGostR)
                 var x = parseInt(item.dsGostR.match(/\d./g),10)
               if(item.dsTrEaes)
@@ -173,7 +181,7 @@ function submutFunc() {
            // Details
            var cell = document.createElement("div");
            cell.className = "res-cell"
-           cell.innerHTML  = parseInt((docsSum[index]*100)/oneHundredPr,10) + " %"
+           cell.innerHTML  = Math.round(parseInt((docsSum[index]*100)/oneHundredPr,10)) + " %"
            row.appendChild(cell)
            table.appendChild(row)
 
