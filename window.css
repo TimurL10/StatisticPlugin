@@ -1,3 +1,11 @@
+#loadingProgressG {
+    width: 256px;
+    height: 10px;
+    overflow: hidden;
+    background-color: #3ba4e1;
+    border-radius: 4px;
+}
+
 .button-container {
     float: left;
     display: block;
@@ -59,8 +67,8 @@ color: #993838;
 .settings-pan {
   display: table-row;
   background: rgba(0,0,0,.02);
-  border: 1px solid #d7d7d7;
-  padding: 10px 10px 0;
+  border: 1px solid #e6e6e2;
+  padding: 10px 10px;
   border-radius: 6px;
   box-sizing: border-box;
 }

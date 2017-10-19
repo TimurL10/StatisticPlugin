@@ -21,13 +21,15 @@ var arrSelectedAutors =[]
 
 //progress bar
 function move() {
-  var inf = document.querySelector('.info-div')
-  if (!inf){
-  var div2 = document.createElement('div');
-  div2.className = "info-div"
-  div2.innerHTML = 'Please wait..'
-  document.querySelector('.table-perf-title').appendChild(div2)
-}
+  document.querySelector('#footer_content').style.display='none';
+  document.querySelector('#footer_spinner').style.display='block';
+  // var inf = document.querySelector('.info-div')
+  // if (!inf){
+  // var div2 = document.createElement('div');
+  // div2.className = "info-div"
+  // div2.innerHTML = 'Please wait..'
+  // document.querySelector('.table-perf-title').appendChild(div2)
+//}
 }
 
 
@@ -59,9 +61,15 @@ div.setAttribute('data-value', '50');
 document.querySelector('.wrapper').appendChild(div)
 
 var FooterDiv = document.createElement("div")
-FooterDiv.innerHTML = '<footer class="footer" id="footer_content" style="display: block; position: fixed;"><div class="inner"><div class="row"><div class="content col-xs-24"><div class="button-container" style="width: 33.3333%;"><a data-action="loadoptions" class="btn btn-primary create-documents">Получить отчет</a></div><div class="button-container" style="width: 33.3333%;"><a data-action="selectcert" class="btn btn-primary create-documents">Выбрать сертификат</a></div><div class="button-container" style="width: 33.3333%;"><a data-action="saveoptions" class="btn btn-primary create-documents">Сохранить настройки</a></div></div></div></div></footer>'
+FooterDiv.innerHTML = '<footer class="footer" id="footer_content" style="display: block; position: fixed;"><div class="inner"><div class="row"><div class="content col-xs-24"><div class="button-container" style="width: 33.3333%;"><a data-action="submutFunc" id="submitButton"  class="btn btn-primary create-documents">Получить отчет</a></div><div class="button-container" style="width: 33.3333%;"></div><div class="button-container" style="width: 33.3333%;"></div></div></div></div></footer>'
 document.querySelector('.wrapper').appendChild(FooterDiv)
 
+var FooterSpinnerDiv = document.createElement("div")
+FooterSpinnerDiv.innerHTML = '<footer class="footer" id="footer_spinner" style="display: none; position: fixed;"><div class="inner"><div class="row"><div id="loadingProgressG" style="margin-left: auto; margin-right: auto; margin-top: 10px;"><div id="loadingProgressG_1" class="loadingProgressG"></div></div></div></div></footer>'
+document.querySelector('.wrapper').appendChild(FooterSpinnerDiv)
+
+var submitButton = document.querySelector('#submitButton')
+submitButton.addEventListener('click',submutFunc,false);
 
 
 $( function() {
@@ -71,11 +79,13 @@ $( function() {
 $( "#datepicker1" ).datepicker();
 });
 
-var buttonDate = document.createElement("button")
-buttonDate.innerHTML = "Получить отчет"
-buttonDate.id = "myBtn"
-document.querySelector('.wrapper').appendChild(buttonDate)
-buttonDate.addEventListener('click',submutFunc,false);
+
+
+// var buttonDate = document.createElement("button")
+// buttonDate.innerHTML = "Получить отчет"
+// buttonDate.id = "myBtn"
+// document.querySelector('.wrapper').appendChild(buttonDate)
+// buttonDate.addEventListener('click',submutFunc,false);
 function submutFunc() {
   setting.fromDate = document.querySelector("#datepicker").value
   setting.toDate = document.querySelector("#datepicker1").value
@@ -91,6 +101,7 @@ function submutFunc() {
       Authors.filter(item => {
       if(item.turn == "on") {return item}
       move()
+      //document.querySelector('#footer_spinner').style.display='block';
     })
     .forEach((item,index,arr) => {
         setting.typedoc.forEach(elemnt => {
@@ -109,8 +120,12 @@ function submutFunc() {
             document.querySelector('#mainDiv').appendChild(table)
           }
             table.innerHTML = ''
-            var inf = document.querySelector('.info-div')
-            inf.parentNode.removeChild( inf );
+                document.querySelector('#footer_spinner').style.display='none';
+                document.querySelector('#footer_content').style.display='block';
+
+            // var inf = document.querySelector('.info-div')
+            // inf.parentNode.removeChild( inf );
+            document.querySelector('#footer_spinner').style.display='none';
             var titleDiv = document.createElement('div')
             titleDiv.className = 'table-docs-title'
             titleDiv.innerHTML = 'Все документы'
